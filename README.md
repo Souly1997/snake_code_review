@@ -1,5 +1,5 @@
 # snake_code_review
-Snake Game Code Review
+
 A comprehensive analysis of the Warlord27/Snake_game repository, evaluating its implementation against professional software engineering standards. This review covers game architecture, performance, documentation quality, error resilience, and long-term maintainability.
 
 Review Categories:
