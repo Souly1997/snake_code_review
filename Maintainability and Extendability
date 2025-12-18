@@ -1,0 +1,118 @@
+**Maintainability and Extendability**
+  
+ 
+Maintainability and extendability are critical factors in determining how 
+easily a project can be modified, debugged, or expanded over time. While 
+Snake Nervana successfully implements the core mechanics of the Snake 
+game, its current structure presents several challenges in these areas. 
+The majority of the game’s logic is contained within a single JavaScript 
+file, resulting in a monolithic design. Core responsibilities such as input 
+handling, game state updates, collision detection, and rendering are 
+closely intertwined. This tight coupling makes it difficult to isolate 
+individual components for testing or modification. Any change to one part 
+of the logic risks unintentionally affecting other parts of the game. 
+The extensive use of global variables further reduces maintainability. 
+Global state makes it harder to track how and where values are modified, 
+increasing the likelihood of bugs and unintended side effects. As the 
+project grows, managing this shared state would become increasingly 
+complex and error-prone. 
+Configuration values such as game speed, grid size, and visual properties 
+are hard-coded directly into the logic. This approach limits flexibility and 
+requires developers to search through the codebase to make simple 
+adjustments. Centralizing these values into a configuration structure 
+would significantly improve readability and ease of modification. 
+Extendability is also limited by the lack of modular design. Adding features 
+such as difficulty levels, power-ups, alternative control schemes, or 
+multiplayer functionality would require substantial refactoring. Without 
+clear separation of concerns, new features must be woven into existing 
+logic, increasing complexity and the risk of introducing bugs. 
+Although the project provides a functional and playable game, its current 
+design favors simplicity over long-term maintainability. Refactoring the 
+code into smaller, well-defined functions or modules, reducing global 
+state, and organizing configuration values would greatly enhance both 
+maintainability and extendability. These improvements would allow the 
+project to evolve more easily and support future enhancements without 
+compromising stability. 
+**A, Meaning** 
+Maintainability: How easy it is to understand, debug, and modify the 
+game code 
+Extendability: How easy it is to add new features like: -Levels -Speed increase -Power-ups -Sound effects -Multiplayer mode 
+**B, Current Code Structure Issues**
+Excessive Global Variables 
+Problems with global variables: 
+● Hard to track changes 
+● Risk of accidental overwriting 
+● Difficult debugging 
+Better Structure Using a Game State Object 
+const gameState = { 
+    snake: [{ x: 10, y: 10 }], 
+    direction: "ArrowRight", 
+    score: 0, 
+    isRunning: true 
+}; 
+Why This Is Better -All game data stored in one place -Easier debugging -Safer updates 
+**C, Configuration Centralization** 
+Current Problem: Game values are hard-coded: Grid size, Speed & Colors 
+Changing them requires editing multiple lines. 
+Central Config Object 
+const CONFIG = { 
+    tileSize: 20, 
+    gridSize: 20, 
+    speed: 100, 
+    snakeColor: "green", 
+    foodColor: "red" 
+}; 
+ 
+Benefits 
+● Easier balancing 
+● Quick feature changes 
+● Cleaner code 
+ 
+**D,Functional Separation (Modularity)**
+ 
+Current Issue: Game logic, drawing, and input handling are mixed 
+together. 
+Logical Separation 
+function updateGame() { 
+    moveSnake(); 
+    checkCollision(); 
+    checkFood(); 
+} 
+function renderGame() { 
+    clearCanvas(); 
+    drawSnake(); 
+    drawFood(); 
+} 
+Why This Matters 
+● Easier debugging 
+● Easier testing 
+20 
+● Easier feature addition 
+E,Code Readability and Comments 
+ Importance of comments: 
+● New developers struggle to understand logic 
+● Bugs take longer to fix 
+Clear Comments Example 
+// Moves the snake one step in the current directionfunction 
+moveSnake() { 
+    const head = { ...snake[0] }; 
+ 
+    if (direction === "ArrowUp") head.y--; 
+    if (direction === "ArrowDown") head.y++; 
+    if (direction === "ArrowLeft") head.x--; 
+    if (direction === "ArrowRight") head.x++; 
+ 
+    snake.unshift(head); 
+    snake.pop(); 
+} 
+ 
+**F,Extendability Example (Why This Design Helps)?** 
+With the improved structure, adding speed increase per level is easy: 
+ 
+function increaseDifficulty() { 
+    CONFIG.speed -= 5; 
+    clearInterval(gameInterval); 
+    gameInterval = setInterval(gameLoop, CONFIG.speed); 
+} 
+ 
+This would be very hard with unstructured code.
